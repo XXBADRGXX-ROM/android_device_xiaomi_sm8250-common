@@ -32,6 +32,7 @@ import android.content.res.Configuration;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.util.Arrays;
@@ -116,11 +117,12 @@ public class ThermalService extends Service {
     }
 
     private boolean isListedOnGameSpace(String packageName) {
-        String[] gameList = Settings.System.getString(getContentResolver(),
-                SETTINGS_GAME_LIST).split(";");
-        if (packageName == null || gameList.length == 0) {
+        String gameListStr = Settings.System.getString(getContentResolver(),
+                SETTINGS_GAME_LIST);
+        if (TextUtils.isEmpty(packageName) || TextUtils.isEmpty(gameListStr)) {
             return false;
         }
+        String[] gameList = gameListStr.split(";");
 
         return Arrays.stream(gameList).map(data -> {
             String[] userGame = data.split("=");
