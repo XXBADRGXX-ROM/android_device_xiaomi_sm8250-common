@@ -279,6 +279,21 @@ PRODUCT_PACKAGES += \
 
 $(call soong_config_set_bool,lineage_health,charging_control_supports_bypass,false)
 
+# Logging
+SPAMMY_LOG_TAGS := \
+    SDM \
+    SDM-histogram \
+    SRE \
+    cnss-daemon \
+    sensors \
+    sensors-hal \
+    android.hardware.sensors@1.0-service
+
+ifneq ($(TARGET_BUILD_VARIANT),eng)
+PRODUCT_VENDOR_PROPERTIES += \
+    $(foreach tag,$(SPAMMY_LOG_TAGS),log.tag.$(tag)=E)
+endif
+
 # Media configs
 PRODUCT_PACKAGES += \
     media_codecs_c2.xml \
